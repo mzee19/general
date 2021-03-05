@@ -1,100 +1,99 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+@section('content')
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Form</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                            <li class="breadcrumb-item active">Form</li>
+                        </ol>
+                    </div>
                 </div>
-            @endif
+            </div><!-- /.container-fluid -->
+        </section>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Form Field</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form role="form" action="{{route('formFieldUpdate', $formField->id)}}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <div class="card-body">
+                                    <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
+                                        <label for="type">Type</label>
+                                        <select class="form-control" name="type" required>
+                                            <option value="text" {{$formField->type == 'text' ? 'selected' : ''}}>Text</option>
+                                            <option value="number" {{$formField->type == 'number' ? 'selected' : ''}}>Number</option>
+                                            <option value="email" {{$formField->type == 'email' ? 'selected' : ''}}>Email</option>
+                                            <option value="select" {{$formField->type == 'select' ? 'selected' : ''}}>Select</option>
+                                            <option value="radio" {{$formField->type == 'radio' ? 'selected' : ''}}>Radio</option>
+                                            <option value="checkbox" {{$formField->type == 'checkbox' ? 'selected' : ''}}>CheckBox</option>
+                                        </select>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                                        <span class="text-danger">{{ $errors->first('type') }}</span>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('label_name') ? 'has-error' : '' }}">
+                                        <label for="labelName">Label Name</label>
+                                        <input type="text" value="{{ $formField->label_name}}" class="form-control" name="label_name" id="labelName" placeholder="Enter Label Name" required>
+                                        <span class="text-danger">{{ $errors->first('label_name') }}</span>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('mandatory') ? 'has-error' : '' }}">
+                                        <label for="mandatory">Mandatory</label>
+                                        <input class="form-check-input" {{$formField->mandatory == true ? 'checked' : '' }} style="margin-left: 0px !important;" type="checkbox" name="mandatory" id="mandatory">
+                                        <span class="text-danger">{{ $errors->first('mandatory') }}</span>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('option') ? 'has-error' : '' }}">
+                                        <label for="option">Option <small> use comma (,) for separate value</small></label>
+                                        <input class="form-control"  value="{{$formField->option}}" type="text" name="option" id="option">
+                                        <span class="text-danger">{{ $errors->first('option') }}</span>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('min_value') ? 'has-error' : '' }}">
+                                        <label for="minValue">Min Value</label>
+                                        <input class="form-control" type="number" value="{{$formField->min_value}}" name="min_value" id="minValue">
+                                        <span class="text-danger">{{ $errors->first('min_value') }}</span>
+
+                                    </div>
+                                    <div class="form-group {{ $errors->has('max_value') ? 'has-error' : '' }}">
+                                        <label for="maxValue">Max Value</label>
+                                        <input class="form-control" value="{{$formField->max_value}}" type="number" name="max_value" id="maxValue">
+                                        <span class="text-danger">{{ $errors->first('max_value') }}</span>
+
+                                    </div>
+                                    <div class="form-group {{ $errors->has('length') ? 'has-error' : '' }}">
+                                        <label for="length">Length</label>
+                                        <input class="form-control" value="{{$formField->length}}" type="number" name="length" id="length">
+                                        <span class="text-danger">{{ $errors->first('length') }}</span>
+
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </body>
-</html>
+        </section>
+    </div>
+@endsection()

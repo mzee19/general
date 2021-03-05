@@ -7,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Form Fields</h1>
+            <h1>Employee</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Form Field</li>
+              <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+              <li class="breadcrumb-item active">Employee</li>
             </ol>
           </div>
         </div>
@@ -25,16 +25,16 @@
       <!-- Default box -->
       <div class="card">
           @if(Session('success'))
-              <div class="alert alert-primary alert-dismissible">
+              <div class="alert alert-success alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                               aria-hidden="true">×</span></button>
                   <strong>Success:</strong>&nbsp; {{ Session('success') }} </div>
 
           @endif
         <div class="card-header">
-          <h3 class="card-title">Fields</h3>
+          <h3 class="card-title">Employee</h3>
           <div class="card-tools">
-              <a href="{{route('formFieldCreate')}}" class="btn btn-primary">Create Field</a>
+              <a href="{{route('employeeCreate')}}" class="btn btn-primary">Add Employee</a>
             {{--<button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">--}}
               {{--<i class="fas fa-minus"></i></button>--}}
             {{--<button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">--}}
@@ -49,16 +49,16 @@
                           #
                       </th>
                       <th style="width: 20%">
-                          Type
+                          Employee Name
                       </th>
                       <th style="width: 30%">
-                          Label Name
+                          Employee Email
                       </th>
                       <th>
-                          Min Value
+                          Employee Designation
                       </th>
                       <th style="width: 10%" class="text-center">
-                          Max Value
+                          Employee Type
                       </th>
                       <th style="width: 20%">
                         Action
@@ -66,30 +66,33 @@
                   </tr>
               </thead>
               <tbody>
-                @foreach($formFields as $index => $formField)
+                @foreach($employees as $index => $employee)
+                    @php
+                        $employeeDetail = json_decode($employee->employee_data, true)
+                    @endphp
                   <tr>
                       <td>
                           {{$index+1}}
                       </td>
                       <td>
-                          {{$formField->type}}
+                          {{ $employeeDetail['Employee_Name'] ?? ' ' }}
                       </td>
                       <td>
-                          {{$formField->label_name}}
+                          {{ $employeeDetail['Employee_Email'] ?? ' ' }}
                       </td>
                       <td class="project_progress">
-                          {{$formField->min_value}}
+                          {{ $employeeDetail['Employee_Designation'] ?? ' ' }}
                       </td>
                       <td class="project-state">
-                          {{$formField->max_value}}
+                          {{ $employeeDetail['Employee_Type'] ?? ' ' }}
                       </td>
                       <td class="project-actions text-right">
-                          <a class="btn btn-info btn-sm" href="{{route('formFieldEdit',$formField->id)}}">
+                          <a class="btn btn-info btn-sm" href="{{route('employeeEdit',$employee->id)}}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                           </a>
-                          <a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="deleteForm({{$formField}})">
+                          <a class="btn btn-danger btn-sm" href="{{route('employeeDelete',$employee->id)}}" onclick="deleteForm({{$employee}})">
                               <i class="fas fa-trash">
                               </i>
                               Delete

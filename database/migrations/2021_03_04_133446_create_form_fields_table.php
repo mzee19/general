@@ -17,7 +17,7 @@ class CreateFormFieldsTable extends Migration
             $table->bigIncrements('id');
             $table->enum('type',['text','number','email','select','radio','checkbox'])->default('text');
             $table->string('label_name');
-            $table->boolean('mandatory');
+            $table->boolean('mandatory')->default(false);
             $table->string('option')->nullable();
             $table->string('min_value')->nullable();
             $table->string('max_value')->nullable();

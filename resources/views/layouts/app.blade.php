@@ -19,7 +19,7 @@
   @yield('content')
 
   <!-- /.content-wrapper -->
- 
+{{-- @if(url()->current() == '')--}}
  @include('partial.footer')
 
   <!-- Control Sidebar -->
@@ -31,5 +31,7 @@
 <!-- ./wrapper -->
 
 @include('partial.js')
+
+@yield('after-script')
 </body>
 </html>

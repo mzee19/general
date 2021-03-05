@@ -29,7 +29,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Home
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -40,6 +39,16 @@
               <p>
                 Form Field
               
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{route('employeeIndex')}}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Employee
+
               </p>
             </a>
           </li>
